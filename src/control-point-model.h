@@ -21,6 +21,11 @@ public:
     int rowCount(const QModelIndex &parent=QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
 
+    enum Roles {
+        RoleUDN,
+        RoleUrlBase,
+        RoleLocation,
+    };
 private:
     gobj_ptr<GUPnPContext> context;
     gobj_ptr<GUPnPControlPoint> cp;
