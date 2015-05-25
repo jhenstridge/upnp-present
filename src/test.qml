@@ -1,7 +1,5 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 0.1
-import Ubuntu.Components.Popups 0.1
 import upnp 0.1
 
 MainView {
@@ -23,7 +21,10 @@ MainView {
             model: renderers
             expanded: true
             delegate: OptionSelectorDelegate {
+                iconSource: device.iconUrl
+                constrainImage: true
                 text: device.friendlyName
+                subText: device.modelName
             }
         }
     }

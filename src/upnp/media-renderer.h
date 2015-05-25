@@ -24,6 +24,7 @@ class MediaRenderer : public QObject {
     Q_PROPERTY(QString serialNumber READ serialNumber CONSTANT)
     Q_PROPERTY(QString presentationUrl READ presentationUrl CONSTANT)
     Q_PROPERTY(QString upc READ upc CONSTANT)
+    Q_PROPERTY(QString iconUrl READ iconUrl CONSTANT)
 
     Q_PROPERTY(QString protocolInfo READ protocolInfo NOTIFY protocolInfoChanged)
     Q_PROPERTY(QString transportState READ transportState NOTIFY transportStateChanged)
@@ -50,6 +51,7 @@ public:
     QString serialNumber();
     QString presentationUrl();
     QString upc();
+    QString iconUrl();
 
     QString protocolInfo();
     QString transportState();

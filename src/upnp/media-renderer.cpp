@@ -271,6 +271,15 @@ QString MediaRenderer::upc() {
     return result;
 }
 
+QString MediaRenderer::iconUrl() {
+    char *icon_url = gupnp_device_info_get_icon_url(
+        GUPNP_DEVICE_INFO(device.get()), nullptr,
+        32, 64, 64, true, nullptr, nullptr, nullptr, nullptr);
+    QString result(icon_url);
+    g_free(icon_url);
+    return result;
+}
+
 QString MediaRenderer::protocolInfo() {
     return protocol_info;
 }
