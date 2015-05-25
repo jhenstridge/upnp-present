@@ -69,7 +69,7 @@ MediaRenderer::MediaRenderer(const gobj_ptr<GUPnPDeviceProxy> &device, QObject *
 MediaRenderer::~MediaRenderer() = default;
 
 void MediaRenderer::av_transport_last_change_cb(GUPnPServiceProxy *proxy, const char *variable, GValue *value, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     const char *last_change_xml = g_value_get_string(value);
     GError *error = nullptr;
@@ -97,7 +97,7 @@ void MediaRenderer::av_transport_last_change_cb(GUPnPServiceProxy *proxy, const 
 }
 
 void MediaRenderer::rendering_control_last_change_cb(GUPnPServiceProxy *proxy, const char *variable, GValue *value, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     const char *last_change_xml = g_value_get_string(value);
     GError *error = nullptr;
@@ -115,7 +115,7 @@ void MediaRenderer::rendering_control_last_change_cb(GUPnPServiceProxy *proxy, c
 }
 
 void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     GError *error = nullptr;
     char *sink = nullptr;
@@ -135,7 +135,7 @@ void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceP
 }
 
 void MediaRenderer::get_transport_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     GError *error = nullptr;
     char *transport_state = nullptr;
@@ -154,7 +154,7 @@ void MediaRenderer::get_transport_info_cb(GUPnPServiceProxy *proxy, GUPnPService
 }
 
 void MediaRenderer::get_media_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     GError *error = nullptr;
     char *duration = nullptr;
@@ -174,7 +174,7 @@ void MediaRenderer::get_media_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProx
 }
 
 void MediaRenderer::get_volume_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
-    MediaRenderer *mr = reinterpret_cast<MediaRenderer*>(user_data);
+    auto mr = reinterpret_cast<MediaRenderer*>(user_data);
 
     GError *error = nullptr;
     uint volume = 0;
