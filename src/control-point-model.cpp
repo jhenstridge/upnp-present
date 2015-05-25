@@ -71,9 +71,17 @@ QHash<int, QByteArray> ControlPointModel::roleNames() const {
 }
 
 int ControlPointModel::rowCount(const QModelIndex&) const {
-    return 0;
+    return devices.size();
 }
 
 QVariant ControlPointModel::data(const QModelIndex &index, int role) const {
-    return QVariant();
+    if (index.row() < 0 || index.row() >= (ptrdiff_t)devices.size()) {
+        return QVariant();
+    }
+    switch (role) {
+    case RoleDevice:
+        return QVariant::fromValue(devices[index.row()]);
+    default:
+        return QVariant();
+    }
 }
