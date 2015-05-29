@@ -50,12 +50,11 @@ void ControlPointModel::device_proxy_unavailable_cb(GUPnPControlPoint *cp, GUPnP
     g_object_ref(proxy);
     gobj_ptr<GUPnPDeviceProxy> device(proxy);
 
-    const char *udn = gupnp_device_info_get_udn(GUPNP_DEVICE_INFO(proxy));
     int i;
     decltype(model->devices)::iterator it;
     for (i = 0, it = model->devices.begin(); it != model->devices.end(); i++, it++) {
         MediaRenderer *renderer = *it;
-        if (renderer->udn() == udn) {
+        if (renderer->device.get() == proxy) {
             model->beginRemoveRows(QModelIndex(), i, i);
             model->devices.erase(it);
             model->endRemoveRows();

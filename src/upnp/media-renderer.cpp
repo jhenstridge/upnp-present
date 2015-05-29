@@ -44,21 +44,21 @@ MediaRenderer::MediaRenderer(const gobj_ptr<GUPnPDeviceProxy> &device, QObject *
     gupnp_service_proxy_set_subscribed(rendering_control.get(), true);
 
     // And get current values
-    gupnp_service_proxy_begin_action(
+    get_protocol_info_action = gupnp_service_proxy_begin_action(
         connection_manager.get(), "GetProtocolInfo",
         &MediaRenderer::get_protocol_info_cb, this,
         nullptr);
-    gupnp_service_proxy_begin_action(
+    get_transport_info_action = gupnp_service_proxy_begin_action(
         av_transport.get(), "GetTransportInfo",
         &MediaRenderer::get_transport_info_cb, this,
         "InstanceID", G_TYPE_UINT, 0,
         nullptr);
-    gupnp_service_proxy_begin_action(
+    get_media_info_action = gupnp_service_proxy_begin_action(
         av_transport.get(), "GetMediaInfo",
         &MediaRenderer::get_media_info_cb, this,
         "InstanceID", G_TYPE_UINT, 0,
         nullptr);
-    gupnp_service_proxy_begin_action(
+    get_volume_action = gupnp_service_proxy_begin_action(
         rendering_control.get(), "GetVolume",
         &MediaRenderer::get_volume_cb, this,
         "InstanceID", G_TYPE_UINT, 0,
@@ -66,7 +66,34 @@ MediaRenderer::MediaRenderer(const gobj_ptr<GUPnPDeviceProxy> &device, QObject *
         nullptr);
 }
 
-MediaRenderer::~MediaRenderer() = default;
+MediaRenderer::~MediaRenderer() {
+    if (get_protocol_info_action) {
+        gupnp_service_proxy_cancel_action(
+            connection_manager.get(), get_protocol_info_action);
+    }
+    if (get_transport_info_action) {
+        gupnp_service_proxy_cancel_action(
+            av_transport.get(), get_transport_info_action);
+    }
+    if (get_media_info_action) {
+        gupnp_service_proxy_cancel_action(
+            av_transport.get(), get_media_info_action);
+    }
+    if (get_volume_action) {
+        gupnp_service_proxy_cancel_action(
+            rendering_control.get(), get_volume_action);
+    }
+    if (av_transport) {
+        gupnp_service_proxy_remove_notify(
+            av_transport.get(), "LastChange",
+            &MediaRenderer::av_transport_last_change_cb, this);
+    }
+    if (rendering_control) {
+        gupnp_service_proxy_remove_notify(
+            rendering_control.get(), "LastChange",
+            &MediaRenderer::rendering_control_last_change_cb, this);
+    }
+}
 
 void MediaRenderer::av_transport_last_change_cb(GUPnPServiceProxy *proxy, const char *variable, GValue *value, void *user_data) {
     auto mr = reinterpret_cast<MediaRenderer*>(user_data);
@@ -116,6 +143,7 @@ void MediaRenderer::rendering_control_last_change_cb(GUPnPServiceProxy *proxy, c
 
 void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
     auto mr = reinterpret_cast<MediaRenderer*>(user_data);
+    mr->get_protocol_info_action = nullptr;
 
     GError *error = nullptr;
     char *sink = nullptr;
@@ -136,6 +164,7 @@ void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceP
 
 void MediaRenderer::get_transport_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
     auto mr = reinterpret_cast<MediaRenderer*>(user_data);
+    mr->get_transport_info_action = nullptr;
 
     GError *error = nullptr;
     char *transport_state = nullptr;
@@ -155,6 +184,7 @@ void MediaRenderer::get_transport_info_cb(GUPnPServiceProxy *proxy, GUPnPService
 
 void MediaRenderer::get_media_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
     auto mr = reinterpret_cast<MediaRenderer*>(user_data);
+    mr->get_media_info_action = nullptr;
 
     GError *error = nullptr;
     char *duration = nullptr;
@@ -175,6 +205,7 @@ void MediaRenderer::get_media_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProx
 
 void MediaRenderer::get_volume_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data) {
     auto mr = reinterpret_cast<MediaRenderer*>(user_data);
+    mr->get_volume_action = nullptr;
 
     GError *error = nullptr;
     uint volume = 0;

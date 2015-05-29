@@ -10,6 +10,8 @@
 #include <QObject>
 #include <QString>
 
+class ControlPointModel;
+
 class MediaRenderer : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString udn READ udn CONSTANT)
@@ -31,6 +33,7 @@ class MediaRenderer : public QObject {
     Q_PROPERTY(QString mediaDuration READ mediaDuration NOTIFY mediaDurationChanged)
     Q_PROPERTY(uint volume READ volume NOTIFY volumeChanged)
 
+    friend ControlPointModel;
 public:
     MediaRenderer(const gobj_ptr<GUPnPDeviceProxy> &device, QObject *parent=nullptr);
     virtual ~MediaRenderer();
@@ -69,6 +72,11 @@ private:
     gobj_ptr<GUPnPServiceProxy> connection_manager;
     gobj_ptr<GUPnPServiceProxy> av_transport;
     gobj_ptr<GUPnPServiceProxy> rendering_control;
+
+    GUPnPServiceProxyAction *get_protocol_info_action = nullptr;
+    GUPnPServiceProxyAction *get_transport_info_action = nullptr;
+    GUPnPServiceProxyAction *get_media_info_action = nullptr;
+    GUPnPServiceProxyAction *get_volume_action = nullptr;
 
     QString protocol_info;
     QString transport_state;
