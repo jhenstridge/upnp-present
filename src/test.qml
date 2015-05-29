@@ -8,6 +8,9 @@ MainView {
     applicationName: "foo"
     useDeprecatedToolbar: false
 
+    width: units.gu(40)
+    height: units.gu(70)
+
     Page {
         title: i18n.tr("Send Picture")
 
@@ -15,16 +18,33 @@ MainView {
             id: renderers
         }
 
-        OptionSelector {
-            id: rendererSelector
+        Column {
             anchors.fill: parent
-            model: renderers
-            expanded: true
-            delegate: OptionSelectorDelegate {
-                iconSource: device.iconUrl
-                constrainImage: true
-                text: device.friendlyName
-                subText: device.modelName
+            Label {
+                text: i18n.tr("Pick picture")
+                fontSize: "large"
+            }
+            Button {
+                text: i18n.tr("Pick")
+            }
+            Label {
+                text: i18n.tr("Pick output")
+                fontSize: "large"
+            }
+            OptionSelector {
+                id: rendererSelector
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+                model: renderers
+                expanded: true
+                delegate: OptionSelectorDelegate {
+                    iconSource: device.iconUrl
+                    constrainImage: true
+                    text: device.friendlyName
+                    subText: device.modelName
+                }
             }
         }
     }
