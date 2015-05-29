@@ -43,7 +43,7 @@ MainView {
                     iconSource: device.iconUrl
                     constrainImage: true
                     text: device.friendlyName
-                    subText: device.modelName
+                    subText: device.manufacturer
                 }
             }
         }
