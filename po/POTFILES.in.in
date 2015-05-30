@@ -1,3 +1,4 @@
 [type: gettext/ini] data/upnp-present.desktop.in
 src/upnp/control-point-model.cpp
 src/upnp/media-renderer.cpp
+app/upnp-present.qml
