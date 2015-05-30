@@ -84,3 +84,10 @@ QVariant ControlPointModel::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 }
+
+MediaRenderer *ControlPointModel::get(int index) const {
+    if (index < 0 || index >= (ptrdiff_t)devices.size()) {
+        return nullptr;
+    }
+    return devices[index];
+}

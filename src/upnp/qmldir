@@ -1,2 +1,3 @@
 module upnp
 plugin upnp-model
+typeinfo plugin.qmltypes

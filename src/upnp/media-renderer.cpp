@@ -155,8 +155,9 @@ void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceP
         return;
     }
 
-    if (mr->protocol_info != sink) {
-        mr->protocol_info = sink;
+    QStringList sink_info = QString(sink).split(',', QString::SkipEmptyParts);
+    if (mr->protocol_info != sink_info) {
+        mr->protocol_info = sink_info;
         Q_EMIT mr->protocolInfoChanged();
     }
     g_free(sink);
@@ -221,6 +222,39 @@ void MediaRenderer::get_volume_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAct
         mr->volume_ = volume;
         Q_EMIT mr->volumeChanged();
     }
+}
+
+bool MediaRenderer::setAVTransportURI(QString uri, QString metadata) {
+    // TODO: consider making this async
+    GError *error = nullptr;
+    if (!gupnp_service_proxy_send_action(
+            av_transport.get(), "SetAVTransportURI", &error,
+            "InstanceID", G_TYPE_UINT, 0,
+            "CurrentURI", G_TYPE_STRING, uri.toUtf8().constData(),
+            "CurrentURIMetaData", G_TYPE_STRING, metadata.toUtf8().constData(),
+            nullptr,
+            nullptr)) {
+        qWarning() << "SetAVTransportURI failed:" << error->message;
+        g_error_free(error);
+        return false;
+    }
+    return true;
+}
+
+bool MediaRenderer::play(int speed) {
+    // TODO: consider making this async
+    GError *error = nullptr;
+    if (!gupnp_service_proxy_send_action(
+            av_transport.get(), "Play", &error,
+            "InstanceID", G_TYPE_UINT, 0,
+            "Speed", G_TYPE_INT, speed,
+            nullptr,
+            nullptr)) {
+        qWarning() << "Play failed:" << error->message;
+        g_error_free(error);
+        return false;
+    }
+    return true;
 }
 
 // Device properties
@@ -311,7 +345,7 @@ QString MediaRenderer::iconUrl() {
     return result;
 }
 
-QString MediaRenderer::protocolInfo() {
+QStringList MediaRenderer::protocolInfo() {
     return protocol_info;
 }
 

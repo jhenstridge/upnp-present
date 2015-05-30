@@ -10,9 +10,16 @@ qt5_use_modules(upnp-model Core Qml)
 target_link_libraries(upnp-model ${GUPNP_LDFLAGS})
 
 # Copy qmldir file to build dir for running in QtCreator
-configure_file(
-  qmldir
-  qmldir)
+add_custom_target(upnp-qmldir ALL
+  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/qmldir ${CMAKE_CURRENT_BINARY_DIR}/qmldir
+  DEPENDS qmldir upnp-model
+)
+
+add_custom_command(
+  TARGET upnp-qmldir
+  COMMAND QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/src qmlplugindump upnp 0.1 > ${CMAKE_CURRENT_BINARY_DIR}/plugin.qmltypes
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/src
+)
 
 install(TARGETS upnp-model DESTINATION ${QT_IMPORTS_DIR}/upnp)
-install(FILES qmldir DESTINATION ${QT_IMPORTS_DIR}/upnp)
+install(FILES qmldir plugin.qmltypes DESTINATION ${QT_IMPORTS_DIR}/upnp)

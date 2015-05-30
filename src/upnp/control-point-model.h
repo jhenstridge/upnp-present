@@ -24,6 +24,8 @@ public:
     int rowCount(const QModelIndex &parent=QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
 
+    Q_INVOKABLE MediaRenderer *get(int index) const;
+
     enum Roles {
         RoleDevice,
     };
