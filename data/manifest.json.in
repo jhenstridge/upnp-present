@@ -1,0 +1,15 @@
+{
+    "name": "@APP_ID@",
+    "description": "Present photos to a DLNA compliant TV",
+    "architecture": "@CLICK_ARCH@",
+    "title": "@APP_NAME@",
+    "hooks": {
+        "upnp-present": {
+            "apparmor": "upnp-present.apparmor",
+            "desktop":  "upnp-present.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "James Henstridge <james@jamesh.id.au>",
+    "framework" : "ubuntu-sdk-15.04"
+}
