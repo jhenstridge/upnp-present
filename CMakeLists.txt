@@ -12,17 +12,17 @@ set(APP_NAME          upnp-present)
 set(APP_ID            "upnp-present.jamesh")
 set(UPNP_PRESENT_DIR "share/qml/upnp-present")
 set(MAIN_QML          "upnp-present.qml")
-set(ICON              "graphics/upnp-present.png")
+set(ICON              "upnp-present.png")
 
 set(GETTEXT_PACKAGE   "upnp-present")
 
 # Set install paths
 set(CMAKE_INSTALL_PREFIX /)
-set(DATA_DIR /)
+set(DATA_DIR ${CMAKE_INSTALL_PREFIX})
 set(DESKTOP_DIR ${DATA_DIR})
 set(DESKTOP_FILE_NAME "upnp-present.desktop")
 
-set(EXEC "qmlscene $@ ${SKELETON-PROJECT_DIR}/${MAIN_QML}")
+set(EXEC "qmlscene $@ ${UPNP_PRESENT_DIR}/${MAIN_QML}")
 
 # Components PATH
 execute_process(
@@ -30,7 +30,8 @@ execute_process(
     OUTPUT_VARIABLE ARCH_TRIPLET
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
+set(LIB_DIR "lib/${ARCH_TRIPLET}")
+set(QT_IMPORTS_DIR "${LIB_DIR}/qt5/qml")
 
 include(FindPkgConfig)
 find_package(Intltool REQUIRED)

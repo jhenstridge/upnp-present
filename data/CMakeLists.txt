@@ -13,6 +13,7 @@ install(
   FILES
     upnp-present.apparmor
     upnp-present.content
+    upnp-present.png
   DESTINATION
     ${DATA_DIR}
 )
