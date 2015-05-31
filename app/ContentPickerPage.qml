@@ -37,6 +37,10 @@ Page {
         onImportRequested: {
             root._setTransfer(transfer);
         }
+
+        onShareRequested: {
+            root._setTransfer(transfer);
+        }
     }
 
     ContentPeerPicker {
