@@ -1,11 +1,12 @@
 {
     "name": "@APP_ID@",
-    "description": "Present photos to a DLNA compliant TV",
+    "description": "Send photos to a DLNA/UPnP media renderer",
     "architecture": "@CLICK_ARCH@",
     "title": "@APP_NAME@",
     "hooks": {
         "upnp-present": {
             "apparmor": "upnp-present.apparmor",
+            "content-hub": "upnp-present.content",
             "desktop":  "upnp-present.desktop"
         }
     },
