@@ -31,7 +31,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 set(LIB_DIR "lib/${ARCH_TRIPLET}")
-set(QT_IMPORTS_DIR "${LIB_DIR}/qt5/qml")
+set(QT_IMPORTS_DIR "${LIB_DIR}")
 
 include(FindPkgConfig)
 find_package(Intltool REQUIRED)

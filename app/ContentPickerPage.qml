@@ -11,6 +11,10 @@ Page {
     signal done
 
     function _setTransfer(transfer) {
+        if (root.activeTransfer) {
+            root.item = null
+            root.activeTransfer.finalize();
+        }
         root.activeTransfer = transfer;
         if (root.activeTransfer.state == ContentTransfer.Charged) {
             root.item = root.activeTransfer.items[0];
