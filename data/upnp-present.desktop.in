@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=UPnP Present
-Comment=My project description
+Comment=Send photos to a DLNA / UPnP media renderer
 Exec=@EXEC@
 Icon=@ICON@
 Terminal=false
