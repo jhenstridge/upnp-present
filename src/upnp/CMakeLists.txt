@@ -24,13 +24,13 @@ add_custom_target(upnp-qmldir ALL
   DEPENDS qmldir upnp-model
 )
 
-if(NOT CMAKE_CROSS_COMPILING)
-  add_custom_command(
-    TARGET upnp-qmldir
-    COMMAND QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/src qmlplugindump upnp 0.1 > ${CMAKE_CURRENT_BINARY_DIR}/plugin.qmltypes
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/src
-  )
-endif()
+#if(NOT CMAKE_CROSS_COMPILING)
+#  add_custom_command(
+#    TARGET upnp-qmldir
+#    COMMAND QML2_IMPORT_PATH=${CMAKE_BINARY_DIR}/src qmlplugindump upnp 0.1 > ${CMAKE_CURRENT_BINARY_DIR}/plugin.qmltypes
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/src
+#  )
+#endif()
 
 install(TARGETS upnp-model DESTINATION ${QT_IMPORTS_DIR}/upnp)
 install(
