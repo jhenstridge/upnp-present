@@ -93,10 +93,28 @@ MainView {
                         text: i18n.tr("Send")
                         onClicked: {
                             var renderer = renderers.get(rendererSelector.selectedIndex);
+                            if (!renderer) {
+                                console.log("No renderer selected");
+                                return;
+                            }
+                            var contentType = UPnP.Utils.getMimeType(resource.contentUri);
+                            var protocolInfo, contentFeatures;
+                            for (var i = 0; i < renderer.protocolInfo.length; i++) {
+                                protocolInfo = renderer.protocolInfo[i];
+                                var parts = protocolInfo.split(":");
+                                contentFeatures = parts[3];
+                                if (parts[0] === "http-get" || parts[2] === contentType) {
+                                    break;
+                                }
+                            }
+                            if (i >= renderer.protocolInfo.length) {
+                                console.log("No matching protocol");
+                                return;
+                            }
                             resource.clearHeaders();
-                            resource.addHeader("Content-Type", "image/jpeg");
-                            resource.addHeader("contentFeatures.dlna.org", "DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
-                            var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", "http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
+                            resource.addHeader("Content-Type", contentType);
+                            resource.addHeader("contentFeatures.dlna.org", contentFeatures);
+                            var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", protocolInfo);
                             renderer.setAVTransportURI(resource.uri, didl);
                             renderer.play(1);
                         }
