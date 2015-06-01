@@ -257,6 +257,21 @@ bool MediaRenderer::play(int speed) {
     return true;
 }
 
+bool MediaRenderer::stop() {
+    // TODO: consider making this async
+    GError *error = nullptr;
+    if (!gupnp_service_proxy_send_action(
+            av_transport.get(), "Stop", &error,
+            "InstanceID", G_TYPE_UINT, 0,
+            nullptr,
+            nullptr)) {
+        qWarning() << "Stop failed:" << error->message;
+        g_error_free(error);
+        return false;
+    }
+    return true;
+}
+
 // Device properties
 QString MediaRenderer::udn() {
     return QString(gupnp_device_info_get_udn(GUPNP_DEVICE_INFO(device.get())));

@@ -47,6 +47,7 @@ public:
 
     Q_INVOKABLE bool setAVTransportURI(QString uri, QString metadata);
     Q_INVOKABLE bool play(int speed=1);
+    Q_INVOKABLE bool stop();
 
     // Device properties
     QString udn();
