@@ -13,6 +13,7 @@
 #include <QUrl>
 
 #include <memory>
+#include <vector>
 
 namespace upnp {
 
@@ -36,8 +37,13 @@ public:
     void setPath(const QString &new_path);
     QUrl getContentUri() const;
     void setContentUri(const QUrl &new_content_uri);
+    QList<QList<QString>> getResponseHeaders() const;
+    void setResponseHeaders(const QList<QList<QString>> &new_headers);
 
     QUrl getUri() const;
+
+    Q_INVOKABLE void addHeader(const QString &key, const QString &value);
+    Q_INVOKABLE void clearHeaders();
 
 Q_SIGNALS:
     void contextChanged();
@@ -56,6 +62,7 @@ private:
     gobj_ptr<SoupServer> server;
     QString path;
     QUrl content_uri;
+    std::vector<std::pair<QString, QString>> headers;
 
     std::unique_ptr<GMappedFile, decltype(&g_mapped_file_unref)> mapping;
 };

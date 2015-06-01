@@ -99,6 +99,14 @@ QUrl WebResource::getUri() const {
     return uri;
 }
 
+void WebResource::addHeader(const QString &key, const QString &value) {
+    headers.emplace_back(key, value);
+}
+
+void WebResource::clearHeaders() {
+    headers.clear();
+}
+
 void WebResource::requestHandler(SoupServer *server, SoupMessage *msg,
                                  const char*path, GHashTable *query,
                                  SoupClientContext *context, void *user_data) {
@@ -117,7 +125,13 @@ void WebResource::requestHandler(SoupServer *server, SoupMessage *msg,
     auto length = g_mapped_file_get_length(res->mapping.get());
     soup_message_headers_append(
         msg->response_headers, "Content-Length", std::to_string(length).c_str());
-    // Add custom response headers
+
+    for (const auto &h : res->headers) {
+        soup_message_headers_append(
+            msg->response_headers,
+            h.first.toUtf8().constData(),
+            h.second.toUtf8().constData());
+    }
 
     if (msg->method == SOUP_METHOD_GET) {
         SoupBuffer *buffer = soup_buffer_new_with_owner(
