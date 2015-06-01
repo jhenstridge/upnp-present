@@ -6,7 +6,7 @@ Page {
     id: root
 
     property ContentItem item
-    property var activeTransfer
+    property ContentTransfer activeTransfer
 
     signal done
 
