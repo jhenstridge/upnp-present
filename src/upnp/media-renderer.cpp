@@ -6,14 +6,14 @@
 #include <stdexcept>
 
 namespace {
-
 const char CONNECTION_MANAGER[] = "urn:schemas-upnp-org:service:ConnectionManager";
 const char AV_TRANSPORT[] = "urn:schemas-upnp-org:service:AVTransport";
 const char RENDERING_CONTROL[] = "urn:schemas-upnp-org:service:RenderingControl";
 
 gobj_ptr<GUPnPLastChangeParser> lc_parser(gupnp_last_change_parser_new());
-
 }
+
+namespace upnp {
 
 MediaRenderer::MediaRenderer(const gobj_ptr<GUPnPDeviceProxy> &device, QObject *parent)
     : QObject(parent), device(device) {
@@ -359,4 +359,6 @@ QString MediaRenderer::mediaDuration() {
 
 uint MediaRenderer::volume() {
     return volume_;
+}
+
 }

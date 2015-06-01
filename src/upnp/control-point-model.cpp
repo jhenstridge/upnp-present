@@ -4,10 +4,10 @@
 #include <string>
 
 namespace {
-
 const char MEDIA_RENDERER[] = "urn:schemas-upnp-org:device:MediaRenderer:1";
-
 }
+
+namespace upnp {
 
 ControlPointModel::ControlPointModel(QObject *parent)
     : QAbstractListModel(parent) {
@@ -90,4 +90,6 @@ MediaRenderer *ControlPointModel::get(int index) const {
         return nullptr;
     }
     return devices[index];
+}
+
 }

@@ -11,6 +11,8 @@
 #include <QString>
 #include <QStringList>
 
+namespace upnp {
+
 class ControlPointModel;
 
 class MediaRenderer : public QObject {
@@ -96,3 +98,5 @@ private:
     static void get_media_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data);
     static void get_volume_cb(GUPnPServiceProxy *proxy, GUPnPServiceProxyAction *action, void *user_data);
 };
+
+}

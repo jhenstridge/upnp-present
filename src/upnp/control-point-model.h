@@ -11,6 +11,8 @@
 
 #include <vector>
 
+namespace upnp {
+
 class ControlPointModel : public QAbstractListModel {
     Q_OBJECT
     Q_ENUMS(Roles)
@@ -43,3 +45,5 @@ private:
     static void device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data);
     static void device_proxy_unavailable_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data);
 };
+
+}
