@@ -97,7 +97,6 @@ MainView {
                             resource.addHeader("Content-Type", "image/jpeg");
                             resource.addHeader("contentFeatures.dlna.org", "DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
                             var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", "http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
-                            console.log(didl);
                             renderer.setAVTransportURI(resource.uri, didl);
                             renderer.play(1);
                         }

@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QUrl>
 
 namespace upnp {
 
@@ -19,7 +20,7 @@ public:
     Q_INVOKABLE QString makeDIDL(const QString &url,
                                  const QString &upnpClass,
                                  const QString &protocolInfo);
-    Q_INVOKABLE QString getMimeType(const QString &path);
+    Q_INVOKABLE QString getMimeType(const QUrl &url);
 };
 
 }

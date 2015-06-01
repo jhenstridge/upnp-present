@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <QMimeDatabase>
 #include <QXmlStreamWriter>
 
 namespace upnp {
@@ -37,8 +38,10 @@ QString Utils::makeDIDL(const QString &url, const QString &upnpClass,
     return didl;
 }
 
-QString Utils::getMimeType(const QString &path) {
-    return "";
+QString Utils::getMimeType(const QUrl &url) {
+    QMimeDatabase db;
+    QMimeType mime = db.mimeTypeForUrl(url);
+    return mime.name();
 }
 
 }
