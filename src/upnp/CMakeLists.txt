@@ -5,6 +5,7 @@ add_library(upnp-model MODULE
   context.cpp
   control-point-model.cpp
   media-renderer.cpp
+  web-resource.cpp
   )
 set_target_properties(upnp-model PROPERTIES AUTOMOC TRUE)
 qt5_use_modules(upnp-model Core Qml)
