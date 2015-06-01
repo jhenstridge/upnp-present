@@ -12,27 +12,39 @@ namespace upnp {
 ControlPointModel::ControlPointModel(QObject *parent)
     : QAbstractListModel(parent) {
     roles[RoleDevice] = "device";
-
-    GError *error = nullptr;
-    context.reset(gupnp_context_new(nullptr, nullptr, 0, &error));
-    if (!context) {
-        std::string message("Could not create UPnP context: ");
-        message += error->message;
-        g_error_free(error);
-        throw std::runtime_error(message);
-    }
-
-    cp.reset(gupnp_control_point_new(context.get(), MEDIA_RENDERER));
-    g_signal_connect(
-        cp.get(), "device-proxy-available",
-        G_CALLBACK(&ControlPointModel::device_proxy_available_cb), this);
-    g_signal_connect(
-        cp.get(), "device-proxy-unavailable",
-        G_CALLBACK(&ControlPointModel::device_proxy_unavailable_cb), this);
-    gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(cp.get()), true);
 }
 
 ControlPointModel::~ControlPointModel() = default;
+
+Context *ControlPointModel::getContext() const {
+    return context;
+}
+
+void ControlPointModel::setContext(Context *new_context) {
+    if (new_context == context) return;
+
+    if (context) {
+        beginResetModel();
+        for (auto &renderer : devices) {
+            renderer->deleteLater();
+        }
+        devices.clear();
+        endResetModel();
+        cp.reset();
+    }
+
+    context = new_context;
+    if (context) {
+        cp.reset(gupnp_control_point_new(context->context.get(), MEDIA_RENDERER));
+        g_signal_connect(
+            cp.get(), "device-proxy-available",
+            G_CALLBACK(&ControlPointModel::device_proxy_available_cb), this);
+        g_signal_connect(
+            cp.get(), "device-proxy-unavailable",
+            G_CALLBACK(&ControlPointModel::device_proxy_unavailable_cb), this);
+        gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(cp.get()), true);
+    }
+}
 
 void ControlPointModel::device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data) {
     auto model = reinterpret_cast<ControlPointModel*>(user_data);

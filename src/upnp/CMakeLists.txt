@@ -2,6 +2,7 @@ add_definitions(-DQT_NO_KEYWORDS ${GUPNP_CFLAGS})
 
 add_library(upnp-model MODULE
   plugin.cpp
+  context.cpp
   control-point-model.cpp
   media-renderer.cpp
   )

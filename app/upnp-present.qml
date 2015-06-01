@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
-import upnp 0.1
+import upnp 0.1 as UPnP
 
 MainView {
     id: main
@@ -21,8 +21,13 @@ MainView {
             visible: false
             title: i18n.tr("Send Picture")
 
-            ControlPointModel {
+            UPnP.Context {
+                id: upnpContext
+            }
+
+            UPnP.ControlPointModel {
                 id: renderers
+                context: upnpContext
             }
 
             Column {

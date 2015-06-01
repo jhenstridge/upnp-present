@@ -3,10 +3,12 @@
 #pragma once
 
 #include "gobj_memory.h"
+#include "context.h"
 #include "media-renderer.h"
 
 #include <libgupnp/gupnp-control-point.h>
 #include <QAbstractListModel>
+#include <QPointer>
 #include <QString>
 
 #include <vector>
@@ -16,6 +18,7 @@ namespace upnp {
 class ControlPointModel : public QAbstractListModel {
     Q_OBJECT
     Q_ENUMS(Roles)
+    Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext)
 public:
     explicit ControlPointModel(QObject *parent=nullptr);
     virtual ~ControlPointModel();
@@ -35,10 +38,13 @@ public:
 protected:
     QHash<int,QByteArray> roleNames() const override;
 
+    Context *getContext() const;
+    void setContext(Context *new_context);
+
 private:
     QHash<int, QByteArray> roles;
 
-    gobj_ptr<GUPnPContext> context;
+    QPointer<Context> context;
     gobj_ptr<GUPnPControlPoint> cp;
     std::vector<MediaRenderer*> devices;
 
