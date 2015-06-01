@@ -37,11 +37,15 @@ MainView {
                 }
                 Row {
                     spacing: units.gu(1)
-                    Image {
-                        width: units.gu(10)
-                        height: units.gu(10)
-                        fillMode: Image.PreserveAspectFit
-                        source: picker.item ? picker.item.url : ""
+                    UbuntuShape {
+                        width: units.gu(20)
+                        height: units.gu(20)
+                        Image {
+                            width: parent.width
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                            source: picker.item ? picker.item.url : ""
+                        }
                     }
                     Button {
                         anchors.verticalCenter: parent.verticalCenter
