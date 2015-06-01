@@ -96,16 +96,9 @@ MainView {
                             resource.clearHeaders();
                             resource.addHeader("Content-Type", "image/jpeg");
                             resource.addHeader("contentFeatures.dlna.org", "DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
-                            var didl = '<?xml version="1.0"?>
-    <DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sec="http://www.sec.co.kr/">
-    <item id="f-0" parentID="0" restricted="0">
-        <dc:title>Picture</dc:title>
-        <dc:creator>Anonymous</dc:creator>
-        <upnp:class>object.item.imageItem.photo</upnp:class>
-        <res protocolInfo="http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000">{0}</res>
-    </item>
-    </DIDL-Lite>';
-                            renderer.setAVTransportURI(resource.uri, didl.replace("{0}", resource.uri));
+                            var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", "http-get:*:image/jpeg:DLNA.ORG_PN=JPEG_LRG;DLNA.ORG_FLAGS=8cf00000000000000000000000000000");
+                            console.log(didl);
+                            renderer.setAVTransportURI(resource.uri, didl);
                             renderer.play(1);
                         }
                     }

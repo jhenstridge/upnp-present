@@ -3,6 +3,7 @@
 #include "control-point-model.h"
 #include "media-renderer.h"
 #include "web-resource.h"
+#include "utils.h"
 
 namespace upnp {
 
@@ -12,6 +13,8 @@ void UpnpPlugin::registerTypes(const char *uri) {
     qmlRegisterUncreatableType<MediaRenderer>(uri, 0, 1, "MediaRenderer",
         "Use ControlPointModel to access MediaRenderers");
     qmlRegisterType<WebResource>(uri, 0, 1, "WebResource");
+    qmlRegisterSingletonType<Utils>(uri, 0, 1, "Utils",
+        [](QQmlEngine*, QJSEngine*) -> QObject* { return new Utils(); });
 }
 
 }
