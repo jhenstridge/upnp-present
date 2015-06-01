@@ -42,6 +42,7 @@ void WebResource::setContext(Context *new_context) {
     resetHandler();
     context = new_context;
     setupHandler();
+    Q_EMIT contextChanged();
 }
 
 QString WebResource::getPath() const {
@@ -54,6 +55,7 @@ void WebResource::setPath(const QString &new_path) {
     resetHandler();
     path = new_path;
     setupHandler();
+    Q_EMIT pathChanged();
 }
 
 QUrl WebResource::getContentUri() const {
@@ -65,6 +67,11 @@ void WebResource::setContentUri(const QUrl &new_content_uri) {
 
     mapping.reset();
     content_uri = new_content_uri;
+    Q_EMIT contentUriChanged();
+    if (!content_uri.isValid()) {
+        return;
+    }
+
     if (!content_uri.isLocalFile()) {
         qWarning() << "Content URI should be a local file, but got" << content_uri;
         return;

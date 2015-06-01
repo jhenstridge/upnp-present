@@ -18,7 +18,7 @@ namespace upnp {
 class ControlPointModel : public QAbstractListModel {
     Q_OBJECT
     Q_ENUMS(Roles)
-    Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext)
+    Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext NOTIFY contextChanged)
 public:
     explicit ControlPointModel(QObject *parent=nullptr);
     virtual ~ControlPointModel();
@@ -29,11 +29,14 @@ public:
     int rowCount(const QModelIndex &parent=QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
 
-    Q_INVOKABLE MediaRenderer *get(int index) const;
+    Q_INVOKABLE upnp::MediaRenderer *get(int index) const;
 
     enum Roles {
         RoleDevice,
     };
+
+Q_SIGNALS:
+    void contextChanged();
 
 protected:
     QHash<int,QByteArray> roleNames() const override;

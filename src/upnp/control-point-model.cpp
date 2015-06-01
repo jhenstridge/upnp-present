@@ -44,6 +44,8 @@ void ControlPointModel::setContext(Context *new_context) {
             G_CALLBACK(&ControlPointModel::device_proxy_unavailable_cb), this);
         gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(cp.get()), true);
     }
+
+    Q_EMIT contextChanged();
 }
 
 void ControlPointModel::device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data) {

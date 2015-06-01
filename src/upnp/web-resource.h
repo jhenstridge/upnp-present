@@ -18,9 +18,9 @@ namespace upnp {
 
 class WebResource : public QObject {
     Q_OBJECT
-    Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext)
-    Q_PROPERTY(QString path READ getPath WRITE setPath)
-    Q_PROPERTY(QUrl contentUri READ getContentUri WRITE setContentUri)
+    Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext NOTIFY contextChanged)
+    Q_PROPERTY(QString path READ getPath WRITE setPath NOTIFY pathChanged)
+    Q_PROPERTY(QUrl contentUri READ getContentUri WRITE setContentUri NOTIFY contentUriChanged)
     Q_PROPERTY(QUrl uri READ getUri)
 
 public:
@@ -38,6 +38,11 @@ public:
     void setContentUri(const QUrl &new_content_uri);
 
     QUrl getUri() const;
+
+Q_SIGNALS:
+    void contextChanged();
+    void pathChanged();
+    void contentUriChanged();
 
 private:
     void resetHandler();
