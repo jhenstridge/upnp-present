@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
 import upnp 0.1 as UPnP
 
 Page {
@@ -10,6 +11,10 @@ Page {
     // Data from the content hub
     property var contentItem
     signal showContentPicker
+
+    function showError(message) {
+        PopupUtils.open(Qt.resolvedUrl("ErrorDialog.qml"), root, {"text": message});
+    }
 
     UPnP.Context {
         id: upnpContext
@@ -80,11 +85,12 @@ Page {
             spacing: units.gu(1)
 
             Button {
+                id: sendButton
                 text: i18n.tr("Send")
                 onClicked: {
                     var renderer = renderers.get(rendererSelector.selectedIndex);
                     if (!renderer) {
-                        console.log("No renderer selected");
+                        showError("No renderer selected");
                         return;
                     }
                     var contentType = UPnP.Utils.getMimeType(resource.contentUri);
@@ -98,14 +104,16 @@ Page {
                         }
                     }
                     if (i >= renderer.protocolInfo.length) {
-                        console.log("No matching protocol");
+                        showError("Media renderer does not support content type");
                         return;
                     }
                     resource.clearHeaders();
                     resource.addHeader("Content-Type", contentType);
                     resource.addHeader("contentFeatures.dlna.org", contentFeatures);
                     var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", protocolInfo);
-                    renderer.setAVTransportURI(resource.uri, didl);
+                    if (!renderer.setAVTransportURI(resource.uri, didl)) {
+                        showError("Failed to SetAVTransportURI");
+                    }
                     renderer.play(1);
                 }
             }
