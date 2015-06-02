@@ -7,10 +7,10 @@
         "upnp-present": {
             "apparmor": "upnp-present.apparmor",
             "content-hub": "upnp-present.content",
-            "desktop":  "upnp-present.desktop"
+            "desktop": "upnp-present.desktop"
         }
     },
-    "version": "0.1",
+    "version": "0.2",
     "maintainer": "James Henstridge <james@jamesh.id.au>",
-    "framework" : "ubuntu-sdk-15.04"
+    "framework": "ubuntu-sdk-14.10"
 }
