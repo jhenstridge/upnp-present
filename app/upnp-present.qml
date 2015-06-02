@@ -17,6 +17,7 @@ MainView {
 
         MainPage {
             id: main
+            visible: false
 
             contentItem: picker.item
             onShowContentPicker: pageStack.push(picker)

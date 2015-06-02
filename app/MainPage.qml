@@ -5,7 +5,6 @@ import upnp 0.1 as UPnP
 
 Page {
     id: root
-    visible: false
     title: i18n.tr("Send Picture")
 
     // Data from the content hub
