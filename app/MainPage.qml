@@ -116,7 +116,7 @@ Page {
                         protocolInfo = renderer.protocolInfo[i];
                         var parts = protocolInfo.split(":");
                         contentFeatures = parts[3];
-                        if (parts[0] === "http-get" || parts[2] === contentType) {
+                        if (parts[0] === "http-get" && parts[2] === contentType) {
                             break;
                         }
                     }
