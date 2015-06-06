@@ -20,6 +20,6 @@ the phone.
 Tested Renderers
 ----------------
 
-Sony Bravia KDL-46W4500
-Rygel 0.24.2 (must have the rygel-playbin plugin package installed)
-Kodi 14.2 (must switch on UPnP Client in settings)
+* Sony Bravia KDL-46W4500
+* Rygel 0.24.2 (must have the rygel-playbin plugin package installed)
+* Kodi 14.2 (must switch on UPnP Client in settings)
