@@ -96,7 +96,8 @@ public:
     DlnaFlags dlnaFlags() const;
     void setDlnaFlags(DlnaFlags new_flags);
 
-    Q_INVOKABLE bool isCompatible(const upnp::ProtocolInfo *other);
+    Q_INVOKABLE bool isCompatible(upnp::ProtocolInfo *other) const;
+    Q_INVOKABLE QString asString() const;
 
 private:
     gobj_ptr<GUPnPProtocolInfo> info;

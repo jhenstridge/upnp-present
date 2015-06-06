@@ -68,7 +68,11 @@ QString ProtocolInfo::dlnaProfile() const {
 }
 
 void ProtocolInfo::setDlnaProfile(const QString &new_profile) {
-    gupnp_protocol_info_set_dlna_profile(info.get(), new_profile.toUtf8().constData());
+    if (new_profile.isEmpty()) {
+        gupnp_protocol_info_set_dlna_profile(info.get(), nullptr);
+    } else {
+        gupnp_protocol_info_set_dlna_profile(info.get(), new_profile.toUtf8().constData());
+    }
 }
 
 ProtocolInfo::DlnaConversion ProtocolInfo::dlnaConversion() const {
@@ -94,8 +98,15 @@ void ProtocolInfo::setDlnaFlags(DlnaFlags new_flags) {
     gupnp_protocol_info_set_dlna_flags(info.get(), static_cast<GUPnPDLNAFlags>(int(new_flags)));
 }
 
-bool ProtocolInfo::isCompatible(const upnp::ProtocolInfo *other) {
+bool ProtocolInfo::isCompatible(upnp::ProtocolInfo *other) const {
     return gupnp_protocol_info_is_compatible(info.get(), other->info.get());
+}
+
+QString ProtocolInfo::asString() const {
+    char *protocol_info = gupnp_protocol_info_to_string(info.get());
+    QString result(protocol_info);
+    g_free(protocol_info);
+    return result;
 }
 
 }

@@ -49,6 +49,14 @@ Page {
         contentUri: picker.item ? picker.item.url : ""
     }
 
+    UPnP.ProtocolInfo {
+        id: resourceInfo
+        protocol: "http-get";
+        dlnaConversion: ProtocolInfo.None
+        //dlnaOperation: 0
+        dlnaFlags: ProtocolInfo.BackgroundTransferMode | ProtocolInfo.DlnaV15
+    }
+
     Column {
         spacing: units.gu(1)
         anchors {
@@ -110,26 +118,28 @@ Page {
                         showError("No renderer selected");
                         return;
                     }
-                    var contentType = UPnP.Utils.getMimeType(resource.contentUri);
-                    var protocolInfo, contentFeatures;
+                    resourceInfo.mimeType = UPnP.Utils.getMimeType(resource.contentUri);
+                    resourceInfo.dlnaProfile = "";
+                    var found = false;
                     for (var i = 0; i < renderer.protocolInfo.length; i++) {
-                        protocolInfo = renderer.protocolInfo[i];
-                        var parts = protocolInfo.split(":");
-                        contentFeatures = parts[3];
-                        if (parts[0] === "http-get" && parts[2] === contentType) {
+                        var info = renderer.protocolInfo[i];
+                        if (resourceInfo.isCompatible(info)) {
+                            resourceInfo.dlnaProfile = info.dlnaProfile;
+                            found = true;
                             break;
                         }
                     }
-                    if (i >= renderer.protocolInfo.length) {
+                    if (!found) {
                         showError("Media renderer does not support content type");
                         return;
                     }
                     resource.clearHeaders();
-                    resource.addHeader("Content-Type", contentType);
-                    resource.addHeader("contentFeatures.dlna.org", contentFeatures);
-                    var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", protocolInfo);
+                    resource.addHeader("Content-Type", resourceInfo.mimeType);
+                    resource.addHeader("contentFeatures.dlna.org", resourceInfo.toString().split(":")[3]);
+                    var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", resourceInfo.toString());
                     if (!renderer.setAVTransportURI(resource.uri, didl)) {
                         showError("Failed to SetAVTransportURI");
+                        return;
                     }
                     renderer.play(1);
                 }
