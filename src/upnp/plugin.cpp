@@ -20,6 +20,7 @@
 #include "context.h"
 #include "control-point-model.h"
 #include "media-renderer.h"
+#include "protocol-info.h"
 #include "web-resource.h"
 #include "utils.h"
 
@@ -30,6 +31,7 @@ void UpnpPlugin::registerTypes(const char *uri) {
     qmlRegisterType<ControlPointModel>(uri, 0, 1, "ControlPointModel");
     qmlRegisterUncreatableType<MediaRenderer>(uri, 0, 1, "MediaRenderer",
         "Use ControlPointModel to access MediaRenderers");
+    qmlRegisterType<ProtocolInfo>(uri, 0, 1, "ProtocolInfo");
     qmlRegisterType<WebResource>(uri, 0, 1, "WebResource");
     qmlRegisterSingletonType<Utils>(uri, 0, 1, "Utils",
         [](QQmlEngine*, QJSEngine*) -> QObject* { return new Utils(); });

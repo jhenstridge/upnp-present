@@ -5,6 +5,7 @@ add_library(upnp-model MODULE
   context.cpp
   control-point-model.cpp
   media-renderer.cpp
+  protocol-info.cpp
   web-resource.cpp
   utils.cpp
   )
