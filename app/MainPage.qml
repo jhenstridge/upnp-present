@@ -134,7 +134,7 @@ Page {
                     }
                     resource.clearHeaders();
                     resource.addHeader("Content-Type", resourceInfo.mimeType);
-                    resource.addHeader("contentFeatures.dlna.org", resourceInfo.toString().split(":")[3]);
+                    resource.addHeader("contentFeatures.dlna.org", resourceInfo.asString().split(":")[3]);
                     var didl = UPnP.Utils.makeDIDL(resource.uri, "object.item.imageItem.photo", resourceInfo.asString());
                     if (!renderer.setAVTransportURI(resource.uri, didl)) {
                         showError("Failed to SetAVTransportURI");
