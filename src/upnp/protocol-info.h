@@ -75,6 +75,7 @@ public:
     Q_DECLARE_FLAGS(DlnaFlags, DlnaFlag)
 
     ProtocolInfo(QObject *parent=nullptr);
+    ProtocolInfo(const QString &protocol_info, QObject *parent=nullptr);
     virtual ~ProtocolInfo();
 
     ProtocolInfo(const ProtocolInfo&) = delete;

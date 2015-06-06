@@ -20,13 +20,16 @@
 #pragma once
 
 #include "gobj_memory.h"
+#include "protocol-info.h"
 
 #include <libgupnp/gupnp-device-proxy.h>
 #include <libgupnp/gupnp-service-proxy.h>
 
 #include <QObject>
+#include <QQmlListProperty>
 #include <QString>
-#include <QStringList>
+
+#include <vector>
 
 namespace upnp {
 
@@ -48,7 +51,7 @@ class MediaRenderer : public QObject {
     Q_PROPERTY(QString upc READ upc CONSTANT)
     Q_PROPERTY(QString iconUrl READ iconUrl CONSTANT)
 
-    Q_PROPERTY(QStringList protocolInfo READ protocolInfo NOTIFY protocolInfoChanged)
+    Q_PROPERTY(QQmlListProperty<upnp::ProtocolInfo> protocolInfo READ protocolInfo NOTIFY protocolInfoChanged)
     Q_PROPERTY(QString transportState READ transportState NOTIFY transportStateChanged)
     Q_PROPERTY(QString mediaDuration READ mediaDuration NOTIFY mediaDurationChanged)
     Q_PROPERTY(uint volume READ volume NOTIFY volumeChanged)
@@ -81,7 +84,7 @@ public:
     QString upc();
     QString iconUrl();
 
-    QStringList protocolInfo();
+    QQmlListProperty<ProtocolInfo> protocolInfo();
     QString transportState();
     QString mediaDuration();
     uint volume();
@@ -103,7 +106,7 @@ private:
     GUPnPServiceProxyAction *get_media_info_action = nullptr;
     GUPnPServiceProxyAction *get_volume_action = nullptr;
 
-    QStringList protocol_info;
+    std::vector<ProtocolInfo*> protocol_info;
     QString transport_state;
     QString media_duration;
     uint volume_ = 0;

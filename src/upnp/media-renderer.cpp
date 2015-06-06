@@ -173,11 +173,18 @@ void MediaRenderer::get_protocol_info_cb(GUPnPServiceProxy *proxy, GUPnPServiceP
         return;
     }
 
-    QStringList sink_info = QString(sink).split(',', QString::SkipEmptyParts);
-    if (mr->protocol_info != sink_info) {
-        mr->protocol_info = sink_info;
-        Q_EMIT mr->protocolInfoChanged();
+    for (ProtocolInfo *pi : mr->protocol_info) {
+        pi->deleteLater();
     }
+    mr->protocol_info.clear();
+    for (const QString &info : QString(sink).split(',', QString::SkipEmptyParts)) {
+        try {
+            mr->protocol_info.push_back(new ProtocolInfo(info, mr));
+        } catch (const std::exception &e) {
+            qWarning() << "Could not parse protocol info" << info << "-" << e.what();
+        }
+    }
+    Q_EMIT mr->protocolInfoChanged();
     g_free(sink);
 }
 
@@ -378,8 +385,17 @@ QString MediaRenderer::iconUrl() {
     return result;
 }
 
-QStringList MediaRenderer::protocolInfo() {
-    return protocol_info;
+QQmlListProperty<ProtocolInfo> MediaRenderer::protocolInfo() {
+    return QQmlListProperty<ProtocolInfo>(
+        this, nullptr,
+        [](QQmlListProperty<ProtocolInfo> *prop) -> int {
+            auto mr = static_cast<MediaRenderer*>(prop->object);
+            return mr->protocol_info.size();
+        },
+        [](QQmlListProperty<ProtocolInfo> *prop, int index) -> ProtocolInfo* {
+            auto mr = static_cast<MediaRenderer*>(prop->object);
+            return mr->protocol_info.at(index);
+        });
 }
 
 QString MediaRenderer::transportState() {

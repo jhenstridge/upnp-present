@@ -17,11 +17,24 @@
  */
 
 #include "protocol-info.h"
+#include <stdexcept>
+#include <string>
 
 namespace upnp {
 
 ProtocolInfo::ProtocolInfo(QObject *parent)
     : QObject(parent), info(gupnp_protocol_info_new()) {
+}
+
+ProtocolInfo::ProtocolInfo(const QString &protocol_info, QObject *parent)
+    : QObject(parent) {
+    GError *error = nullptr;
+    info.reset(gupnp_protocol_info_new_from_string(protocol_info.toUtf8().constData(), &error));
+    if (!info) {
+        std::string message(error->message);
+        g_error_free(error);
+        throw std::runtime_error(message);
+    }
 }
 
 ProtocolInfo::~ProtocolInfo() = default;
