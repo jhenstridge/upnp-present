@@ -28,6 +28,7 @@ Page {
     // Data from the content hub
     property var contentItem
     signal showContentPicker
+    signal showDebugPage
 
     function showError(message) {
         PopupUtils.open(Qt.resolvedUrl("ErrorDialog.qml"), root, {"text": message});
@@ -52,7 +53,7 @@ Page {
     UPnP.ProtocolInfo {
         id: resourceInfo
         protocol: "http-get";
-        dlnaConversion: ProtocolInfo.None
+        dlnaConversion: UPnP.ProtocolInfo.None
         dlnaFlags: UPnP.ProtocolInfo.BackgroundTransferMode | UPnP.ProtocolInfo.DlnaV15
     }
 
@@ -81,7 +82,7 @@ Page {
             Button {
                 anchors.verticalCenter: parent.verticalCenter
                 text: i18n.tr("Pick")
-                onClicked: showContentPicker()
+                onClicked: root.showContentPicker()
             }
         }
 
@@ -150,6 +151,23 @@ Page {
                     var renderer = renderers.get(rendererSelector.selectedIndex);
                     renderer.stop();
                 }
+            }
+        }
+    }
+
+    Label {
+        id: pi
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            margins: units.gu(1)
+        }
+        text: "\u03C0"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                root.showDebugPage()
             }
         }
     }

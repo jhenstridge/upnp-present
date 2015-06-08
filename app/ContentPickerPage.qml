@@ -24,7 +24,8 @@ Page {
     id: root
 
     property ContentItem item
-    property var activeTransfer
+    // Should be of type ContentTransfer, but we can't declare it as such
+    property var activeTransfer: null
 
     signal done
 
