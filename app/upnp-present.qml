@@ -39,7 +39,7 @@ MainView {
 
             contentItem: picker.item
             onShowContentPicker: pageStack.push(picker)
-            onShowDebugPage: console.log("Debug!")
+            onShowDebugPage: pageStack.push(debug)
         }
 
         ContentPickerPage {
@@ -47,6 +47,12 @@ MainView {
             visible: false
 
             onDone: pageStack.pop()
+        }
+
+        DebugPage {
+            id: debug
+            visible: false
+            renderer: main.renderer
         }
     }
 }

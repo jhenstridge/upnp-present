@@ -25,8 +25,10 @@ Page {
     id: root
     title: i18n.tr("Send Picture")
 
+    readonly property var renderer: renderers.devices[rendererSelector.selectedIndex]
     // Data from the content hub
     property var contentItem
+
     signal showContentPicker
     signal showDebugPage
 
@@ -113,7 +115,6 @@ Page {
                 id: sendButton
                 text: i18n.tr("Send")
                 onClicked: {
-                    var renderer = renderers.get(rendererSelector.selectedIndex);
                     if (!renderer) {
                         showError("No renderer selected");
                         return;
@@ -148,7 +149,6 @@ Page {
             Button {
                 text: i18n.tr("Clear")
                 onClicked: {
-                    var renderer = renderers.get(rendererSelector.selectedIndex);
                     renderer.stop();
                 }
             }

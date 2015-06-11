@@ -66,6 +66,22 @@ void ControlPointModel::setContext(Context *new_context) {
     Q_EMIT contextChanged();
 }
 
+QQmlListProperty<MediaRenderer> ControlPointModel::getDevices() const {
+    return QQmlListProperty<MediaRenderer>(
+        const_cast<ControlPointModel*>(this), nullptr,
+        [](QQmlListProperty<MediaRenderer> *prop) -> int {
+            auto cp = static_cast<ControlPointModel*>(prop->object);
+            return cp->devices.size();
+        },
+        [](QQmlListProperty<MediaRenderer> *prop, int index) -> MediaRenderer* {
+            auto cp = static_cast<ControlPointModel*>(prop->object);
+            if (index < 0 || index >= (ptrdiff_t)cp->devices.size()) {
+                return nullptr;
+            }
+            return cp->devices.at(index);
+        });
+}
+
 void ControlPointModel::device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data) {
     auto model = reinterpret_cast<ControlPointModel*>(user_data);
     g_object_ref(proxy);
@@ -75,6 +91,7 @@ void ControlPointModel::device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDe
     model->beginInsertRows(QModelIndex(), model->devices.size(), model->devices.size());
     model->devices.emplace_back(new MediaRenderer(device, model));
     model->endInsertRows();
+    Q_EMIT model->devicesChanged();
 }
 
 void ControlPointModel::device_proxy_unavailable_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data) {
@@ -90,6 +107,7 @@ void ControlPointModel::device_proxy_unavailable_cb(GUPnPControlPoint *cp, GUPnP
             model->beginRemoveRows(QModelIndex(), i, i);
             model->devices.erase(it);
             model->endRemoveRows();
+            Q_EMIT model->devicesChanged();
             renderer->deleteLater();
             break;
         }
@@ -115,13 +133,6 @@ QVariant ControlPointModel::data(const QModelIndex &index, int role) const {
     default:
         return QVariant();
     }
-}
-
-MediaRenderer *ControlPointModel::get(int index) const {
-    if (index < 0 || index >= (ptrdiff_t)devices.size()) {
-        return nullptr;
-    }
-    return devices[index];
 }
 
 }

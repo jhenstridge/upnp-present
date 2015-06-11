@@ -26,6 +26,7 @@
 #include <libgupnp/gupnp-control-point.h>
 #include <QAbstractListModel>
 #include <QPointer>
+#include <QQmlListProperty>
 #include <QString>
 
 #include <vector>
@@ -36,6 +37,8 @@ class ControlPointModel : public QAbstractListModel {
     Q_OBJECT
     Q_ENUMS(Roles)
     Q_PROPERTY(upnp::Context* context READ getContext WRITE setContext NOTIFY contextChanged)
+    Q_PROPERTY(QQmlListProperty<upnp::MediaRenderer> devices READ getDevices NOTIFY devicesChanged)
+
 public:
     explicit ControlPointModel(QObject *parent=nullptr);
     virtual ~ControlPointModel();
@@ -46,20 +49,20 @@ public:
     int rowCount(const QModelIndex &parent=QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
 
-    Q_INVOKABLE upnp::MediaRenderer *get(int index) const;
-
     enum Roles {
         RoleDevice,
     };
 
 Q_SIGNALS:
     void contextChanged();
+    void devicesChanged();
 
 protected:
     QHash<int,QByteArray> roleNames() const override;
 
     Context *getContext() const;
     void setContext(Context *new_context);
+    QQmlListProperty<MediaRenderer> getDevices() const;
 
 private:
     QHash<int, QByteArray> roles;
