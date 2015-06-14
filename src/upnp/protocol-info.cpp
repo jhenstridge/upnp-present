@@ -45,6 +45,7 @@ QString ProtocolInfo::protocol() const {
 
 void ProtocolInfo::setProtocol(const QString &new_protocol) {
     gupnp_protocol_info_set_protocol(info.get(), new_protocol.toUtf8().constData());
+    Q_EMIT protocolChanged();
 }
 
 QString ProtocolInfo::network() const {
@@ -53,6 +54,7 @@ QString ProtocolInfo::network() const {
 
 void ProtocolInfo::setNetwork(const QString &new_network) {
     gupnp_protocol_info_set_network(info.get(), new_network.toUtf8().constData());
+    Q_EMIT networkChanged();
 }
 
 QString ProtocolInfo::mimeType() const {
@@ -61,6 +63,7 @@ QString ProtocolInfo::mimeType() const {
 
 void ProtocolInfo::setMimeType(const QString &new_mime_type) {
     gupnp_protocol_info_set_mime_type(info.get(), new_mime_type.toUtf8().constData());
+    Q_EMIT mimeTypeChanged();
 }
 
 QString ProtocolInfo::dlnaProfile() const {
@@ -73,6 +76,7 @@ void ProtocolInfo::setDlnaProfile(const QString &new_profile) {
     } else {
         gupnp_protocol_info_set_dlna_profile(info.get(), new_profile.toUtf8().constData());
     }
+    Q_EMIT dlnaProfileChanged();
 }
 
 ProtocolInfo::DlnaConversion ProtocolInfo::dlnaConversion() const {
@@ -81,6 +85,7 @@ ProtocolInfo::DlnaConversion ProtocolInfo::dlnaConversion() const {
 
 void ProtocolInfo::setDlnaConversion(DlnaConversion new_conversion) {
     gupnp_protocol_info_set_dlna_conversion(info.get(), static_cast<GUPnPDLNAConversion>(new_conversion));
+    Q_EMIT dlnaConversionChanged();
 }
 
 ProtocolInfo::DlnaOperations ProtocolInfo::dlnaOperation() const {
@@ -88,6 +93,7 @@ ProtocolInfo::DlnaOperations ProtocolInfo::dlnaOperation() const {
 }
 void ProtocolInfo::setDlnaOperation(DlnaOperations new_operation) {
     gupnp_protocol_info_set_dlna_operation(info.get(), static_cast<GUPnPDLNAOperation>(int(new_operation)));
+    Q_EMIT dlnaOperationChanged();
 }
 
 ProtocolInfo::DlnaFlags ProtocolInfo::dlnaFlags() const {
@@ -96,6 +102,7 @@ ProtocolInfo::DlnaFlags ProtocolInfo::dlnaFlags() const {
 
 void ProtocolInfo::setDlnaFlags(DlnaFlags new_flags) {
     gupnp_protocol_info_set_dlna_flags(info.get(), static_cast<GUPnPDLNAFlags>(int(new_flags)));
+    Q_EMIT dlnaFlagsChanged();
 }
 
 bool ProtocolInfo::isCompatible(upnp::ProtocolInfo *other) const {

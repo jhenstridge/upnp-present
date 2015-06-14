@@ -35,13 +35,13 @@ class ProtocolInfo : public QObject {
     Q_OBJECT
     Q_ENUMS(DlnaConversion)
     Q_FLAGS(DlnaOperations DlnaFlags)
-    Q_PROPERTY(QString protocol READ protocol WRITE setProtocol)
-    Q_PROPERTY(QString network READ network WRITE setNetwork)
-    Q_PROPERTY(QString mimeType READ mimeType WRITE setMimeType)
-    Q_PROPERTY(QString dlnaProfile READ dlnaProfile WRITE setDlnaProfile)
-    Q_PROPERTY(DlnaConversion dlnaConversion READ dlnaConversion WRITE setDlnaConversion)
-    Q_PROPERTY(DlnaOperations dlnaOperation READ dlnaOperation WRITE setDlnaOperation)
-    Q_PROPERTY(DlnaFlags dlnaFlags READ dlnaFlags WRITE setDlnaFlags)
+    Q_PROPERTY(QString protocol READ protocol WRITE setProtocol NOTIFY protocolChanged)
+    Q_PROPERTY(QString network READ network WRITE setNetwork NOTIFY networkChanged)
+    Q_PROPERTY(QString mimeType READ mimeType WRITE setMimeType NOTIFY mimeTypeChanged)
+    Q_PROPERTY(QString dlnaProfile READ dlnaProfile WRITE setDlnaProfile NOTIFY dlnaProfileChanged)
+    Q_PROPERTY(DlnaConversion dlnaConversion READ dlnaConversion WRITE setDlnaConversion NOTIFY dlnaConversionChanged)
+    Q_PROPERTY(DlnaOperations dlnaOperation READ dlnaOperation WRITE setDlnaOperation NOTIFY dlnaOperationChanged)
+    Q_PROPERTY(DlnaFlags dlnaFlags READ dlnaFlags WRITE setDlnaFlags NOTIFY dlnaFlagsChanged)
 
 public:
     enum DlnaConversion {
@@ -98,6 +98,15 @@ public:
 
     Q_INVOKABLE bool isCompatible(upnp::ProtocolInfo *other) const;
     Q_INVOKABLE QString asString() const;
+
+Q_SIGNALS:
+    void protocolChanged();
+    void networkChanged();
+    void mimeTypeChanged();
+    void dlnaProfileChanged();
+    void dlnaConversionChanged();
+    void dlnaOperationChanged();
+    void dlnaFlagsChanged();
 
 private:
     gobj_ptr<GUPnPProtocolInfo> info;
