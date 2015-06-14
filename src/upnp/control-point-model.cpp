@@ -32,7 +32,28 @@ ControlPointModel::ControlPointModel(QObject *parent)
     roles[RoleDevice] = "device";
 }
 
-ControlPointModel::~ControlPointModel() = default;
+ControlPointModel::~ControlPointModel() {
+    shutdownControlPoint();
+}
+
+void ControlPointModel::shutdownControlPoint() {
+    beginResetModel();
+    for (auto &renderer : devices) {
+        renderer->deleteLater();
+    }
+    devices.clear();
+    endResetModel();
+    if (device_available_id != 0) {
+        g_signal_handler_disconnect(cp.get(), device_available_id);
+        device_available_id = 0;
+    }
+    if (device_unavailable_id != 0) {
+        g_signal_handler_disconnect(cp.get(), device_unavailable_id);
+        device_unavailable_id = 0;
+    }
+    cp.reset();
+}
+
 
 Context *ControlPointModel::getContext() const {
     return context;
@@ -41,23 +62,14 @@ Context *ControlPointModel::getContext() const {
 void ControlPointModel::setContext(Context *new_context) {
     if (new_context == context) return;
 
-    if (context) {
-        beginResetModel();
-        for (auto &renderer : devices) {
-            renderer->deleteLater();
-        }
-        devices.clear();
-        endResetModel();
-        cp.reset();
-    }
-
+    shutdownControlPoint();
     context = new_context;
     if (context) {
         cp.reset(gupnp_control_point_new(context->context.get(), MEDIA_RENDERER));
-        g_signal_connect(
+        device_available_id = g_signal_connect(
             cp.get(), "device-proxy-available",
             G_CALLBACK(&ControlPointModel::device_proxy_available_cb), this);
-        g_signal_connect(
+        device_unavailable_id = g_signal_connect(
             cp.get(), "device-proxy-unavailable",
             G_CALLBACK(&ControlPointModel::device_proxy_unavailable_cb), this);
         gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(cp.get()), true);

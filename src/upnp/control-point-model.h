@@ -71,6 +71,11 @@ private:
     gobj_ptr<GUPnPControlPoint> cp;
     std::vector<MediaRenderer*> devices;
 
+    unsigned int device_available_id = 0;
+    unsigned int device_unavailable_id = 0;
+
+    void shutdownControlPoint();
+
     static void device_proxy_available_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data);
     static void device_proxy_unavailable_cb(GUPnPControlPoint *cp, GUPnPDeviceProxy *proxy, void *user_data);
 };
