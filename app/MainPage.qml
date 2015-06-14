@@ -121,18 +121,12 @@ Page {
                     }
                     resourceInfo.mimeType = UPnP.Utils.getMimeType(resource.contentUri);
                     resourceInfo.dlnaProfile = "";
-                    var found = false;
                     for (var i = 0; i < renderer.protocolInfo.length; i++) {
                         var info = renderer.protocolInfo[i];
                         if (resourceInfo.isCompatible(info)) {
                             resourceInfo.dlnaProfile = info.dlnaProfile;
-                            found = true;
                             break;
                         }
-                    }
-                    if (!found) {
-                        showError("Media renderer does not support content type");
-                        return;
                     }
                     resource.clearHeaders();
                     resource.addHeader("Content-Type", resourceInfo.mimeType);
