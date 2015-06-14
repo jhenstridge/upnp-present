@@ -24,46 +24,63 @@ import upnp 0.1
 Page {
     id: root
     title: i18n.tr("Media Renderer Info")
+    flickable: scrollarea
 
     property var renderer: null
 
-    Column {
-        anchors {
-            fill: parent
-        }
+    Flickable {
+        id: scrollarea
+        anchors.fill: parent
+        contentHeight: contentItem.childrenRect.height
+        flickableDirection: Flickable.VerticalFlick
 
-        ListItem.Header {
-            text: i18n.tr("Renderer information")
-        }
+        Column {
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
 
-        ListItem.SingleValue {
-            text: i18n.tr("Model")
-            value: renderer ? renderer.modelName : ""
-        }
+            ListItem.Header {
+                text: i18n.tr("Renderer information")
+            }
 
-        ListItem.SingleValue {
-            text: i18n.tr("Model number")
-            value: renderer ? renderer.modelNumber : ""
-        }
+            ListItem.SingleValue {
+                text: i18n.tr("Model")
+                value: renderer ? renderer.modelName : ""
+                visible: value
+            }
 
-        ListItem.SingleValue {
-            text: i18n.tr("Manufacturer")
-            value: renderer ? renderer.manufacturer : ""
-        }
+            ListItem.SingleValue {
+                text: i18n.tr("Model number")
+                value: renderer ? renderer.modelNumber : ""
+                visible: value
+            }
 
-        ListItem.SingleValue {
-            text: i18n.tr("State")
-            value: renderer ? renderer.transportState : ""
-        }
+            ListItem.SingleValue {
+                text: i18n.tr("Manufacturer")
+                value: renderer ? renderer.manufacturer : ""
+                visible: value
+            }
 
-        ListItem.Header {
-            text: i18n.tr("Supported formats")
-        }
+            ListItem.SingleValue {
+                text: i18n.tr("State")
+                value: renderer ? renderer.transportState : ""
+                visible: value
+            }
 
-        Repeater {
-            model: renderer ? renderer.protocolInfo : []
-            delegate: ListItem.SingleValue {
-                text: modelData.mimeType
+            ListItem.Header {
+                text: i18n.tr("Supported formats")
+            }
+
+            Repeater {
+                model: renderer ? renderer.protocolInfo : []
+                delegate: ListItem.MultiValue {
+                    text: modelData.mimeType
+                    values: [
+                        modelData.protocol,
+                        modelData.dlnaProfile
+                    ]
+                }
             }
         }
     }
