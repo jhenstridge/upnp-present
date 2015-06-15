@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-30 12:34+0800\n"
+"POT-Creation-Date: 2015-06-15 18:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,18 +21,58 @@ msgstr ""
 msgid "UPnP Present"
 msgstr ""
 
-#: ../app/upnp-present.qml:15
+#: ../app/MainPage.qml:26
 msgid "Send Picture"
 msgstr ""
 
-#: ../app/upnp-present.qml:24
+#: ../app/MainPage.qml:69
 msgid "Pick picture"
 msgstr ""
 
-#: ../app/upnp-present.qml:28
+#: ../app/MainPage.qml:86
 msgid "Pick"
 msgstr ""
 
-#: ../app/upnp-present.qml:31
+#: ../app/MainPage.qml:92
 msgid "Pick output"
+msgstr ""
+
+#: ../app/MainPage.qml:116
+msgid "Send"
+msgstr ""
+
+#: ../app/MainPage.qml:144
+msgid "Clear"
+msgstr ""
+
+#: ../app/ErrorDialog.qml:33
+msgid "OK"
+msgstr ""
+
+#: ../app/DebugPage.qml:25
+msgid "Media Renderer Info"
+msgstr ""
+
+#: ../app/DebugPage.qml:43
+msgid "Renderer information"
+msgstr ""
+
+#: ../app/DebugPage.qml:47
+msgid "Model"
+msgstr ""
+
+#: ../app/DebugPage.qml:53
+msgid "Model number"
+msgstr ""
+
+#: ../app/DebugPage.qml:59
+msgid "Manufacturer"
+msgstr ""
+
+#: ../app/DebugPage.qml:65
+msgid "State"
+msgstr ""
+
+#: ../app/DebugPage.qml:71
+msgid "Supported formats"
 msgstr ""

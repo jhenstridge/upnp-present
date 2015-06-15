@@ -10,7 +10,7 @@
             "desktop": "upnp-present.desktop"
         }
     },
-    "version": "0.3",
+    "version": "0.4",
     "maintainer": "James Henstridge <james@jamesh.id.au>",
     "framework": "ubuntu-sdk-14.10"
 }
